@@ -11,6 +11,7 @@ body {
   color: #2c2c2c;
 }
 
+/* Main header */
 #main-header {
   margin: 50px auto;
 }
@@ -25,6 +26,7 @@ body {
   cursor: default;
 }
 
+/* Search */
 #search {
   display: flex;
   align-items: center;
@@ -33,10 +35,76 @@ body {
 
 #searchbox {
   color: #2c2c2c;
-  border-radius: 25px;
-  border: 1px solid #666666;
+  border-radius: 35px;
+  border: 1px solid #aaaaaa;
   outline: none;
   padding: 14px;
   width: 350px;
-  font-size: 15px;
+  font-size: 16px;
+}
+
+#searchbox:hover {
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.075);
+  transition: all 0.3s ease-in-out;
+}
+
+/* Animation */
+@-webkit-keyframes basketball {
+  15% {
+    -webkit-transform: translateY(5px);
+    transform: translateY(5px);
+  }
+  30% {
+    -webkit-transform: translateY(-5px);
+    transform: translateY(-5px);
+  }
+  50% {
+    -webkit-transform: translateY(3px);
+    transform: translateY(3px);
+  }
+  65% {
+    -webkit-transform: translateY(-3px);
+    transform: translateY(-3px);
+  }
+  80% {
+    -webkit-transform: translateY(2px);
+    transform: translateY(2px);
+  }
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes basketball {
+  15% {
+    -webkit-transform: translateY(5px);
+    transform: translateY(5px);
+  }
+  30% {
+    -webkit-transform: translateY(-5px);
+    transform: translateY(-5px);
+  }
+  50% {
+    -webkit-transform: translateY(3px);
+    transform: translateY(3px);
+  }
+  65% {
+    -webkit-transform: translateY(-3px);
+    transform: translateY(-3px);
+  }
+  80% {
+    -webkit-transform: translateY(2px);
+    transform: translateY(2px);
+  }
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+}
+#basketball:hover {
+  -webkit-animation: basketball 1s ease;
+  animation: basketball 1s ease;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
 }
