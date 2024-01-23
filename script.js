@@ -6,13 +6,12 @@ const playerStats = document.getElementById('player-stats');
 
 // API endpoints
 const playerUrl = 'https://www.balldontlie.io/api/v1/players';
-const teamUrl = 'https://www.balldontlie.io/api/v1/teams';
 const statsUrl = 'https://www.balldontlie.io/api/v1/season_averages';
 
 // Fetch player data
 const search = () => {
   if (searchBox.value === '' || searchBox.value === ' ') {
-    alert('Please enter a team or player.');
+    alert('Please enter a player.');
   } else {
     fetch(playerUrl + `?search=${searchBox.value}`)
       .then((response) => response.json())
