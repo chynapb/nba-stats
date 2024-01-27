@@ -1,5 +1,6 @@
 const searchBox = document.getElementById('searchBox');
-const statsDiv = document.getElementById('stats');
+const errorDiv = document.getElementById('error');
+const playerData = document.getElementById('player-data');
 const playerHeader = document.getElementById('player-header');
 const playerDescription = document.getElementById('player-description');
 const playerStats = document.getElementById('player-stats');
@@ -19,20 +20,49 @@ const displayPlayerInfo = (player) => {
     height_inches,
     weight_pounds,
   } = player;
-  const playerName = `${first_name} ${last_name}`;
   const playerPosition = position === '' ? 'N/A' : position;
-  const playerTeam = team.full_name;
   const playerHeight =
     height_feet === null ? 'N/A' : `${height_feet}'${height_inches}"`;
   const playerWeight = weight_pounds === null ? 'N/A' : `${weight_pounds} lbs`;
 
   const nameHeader = document.createElement('h1');
-  nameHeader.textContent = playerName;
+  nameHeader.textContent = `${first_name} ${last_name}`;
   playerHeader.appendChild(nameHeader);
 
   const playerInfo = document.createElement('p');
-  playerInfo.innerHTML = `${playerTeam} • ${playerPosition} • ${playerHeight}, ${playerWeight}`;
+  playerInfo.innerHTML = `${team.full_name} • ${playerPosition} • ${playerHeight}, ${playerWeight}`;
   playerDescription.appendChild(playerInfo);
+};
+
+// Display player stats
+const displayPlayerStats = (stats) => {
+  const { ast, blk, fg3_pct, fg_pct, ft_pct, pts, reb, season, stl, turnover } =
+    stats;
+
+  // Format FG%
+  const fg = (fg_pct * 100).toFixed(1) + '%';
+
+  // Stats header
+  const statsHeader = document.createElement('h3');
+  statsHeader.innerHTML = `${season} REGULAR SEASON STATS`;
+  playerStats.appendChild(statsHeader);
+
+  // Display season averages
+  const seasonAvgs = document.createElement('p');
+  seasonAvgs.innerHTML = `PPG: ${pts} | APG: ${ast} | RPG: ${reb} | FG%: ${fg}`;
+  playerStats.appendChild(seasonAvgs);
+};
+
+// Display error message
+const showError = (message) => {
+  // Clear previous data
+  errorDiv.innerHTML = '';
+
+  // Display error message
+  const errorMsg = document.createElement('p');
+  errorMsg.innerHTML = message;
+  errorMsg.classList.add('error');
+  errorDiv.appendChild(errorMsg);
 };
 
 // Fetch data on search
@@ -51,31 +81,31 @@ const search = () => {
         showError('Not found: Please try your search again.');
         return;
       }
-      // Clear previous search data
+      // Clear previous data
+      errorDiv.innerHTML = '';
       playerHeader.innerHTML = '';
       playerDescription.innerHTML = '';
 
-      // Fetch player info and display to DOM
       const player = data.data[0];
+      // Fetch player info and display to DOM
       displayPlayerInfo(player);
 
       // Fetch stats using player id
       const playerId = player.id;
 
-      fetch(statsUrl + `?season=2023&player_ids[]=${playerId}`)
+      fetch(statsUrl + `?player_ids[]=${playerId}`)
         .then((response) => response.json())
         .then((data) => {
           if (!data.data || data.data.length === 0) {
             showError('Player stats not found.');
             return;
           }
+          // Clear previous data
+          playerStats.innerHTML = '';
 
-          const ppg = data.data[0].pts;
-          const apg = data.data[0].ast;
-          const rpg = data.data[0].reb;
-          const fg = (data.data[0].fg_pct * 100).toFixed(1) + '%';
-
-          // Do something with the stats - will refactor this later
+          // Fetch player stats and display to DOM
+          const stats = data.data[0];
+          displayPlayerStats(stats);
         })
         .catch((error) => {
           console.error('Error fetching player stats:', error);
@@ -89,14 +119,6 @@ const search = () => {
     .finally(() => {
       searchBox.value = '';
     });
-};
-
-// Display error message
-const showError = (message) => {
-  const errorMsg = document.createElement('p');
-  errorMsg.innerHTML = message;
-  errorMsg.classList.add('error');
-  playerHeader.appendChild(errorMsg);
 };
 
 // Accept enter key

@@ -48,23 +48,28 @@ body {
   transition: all 0.3s ease-in-out;
 }
 
-/* Stats */
-#stats {
+/* Player data */
+#player-data {
   margin: 75px;
   padding: 20px;
   line-height: 2.5rem;
 }
 
-#player-header {
+#player-header,
+#player-description {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 #player-description {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  color: rgb(43, 61, 161);
+}
+
+#player-stats {
+  text-align: center;
+  margin: 20px;
+  padding: 20px;
 }
 
 /* Errors */
