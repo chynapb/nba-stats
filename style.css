@@ -13,12 +13,12 @@ body {
 
 /* Main header */
 #main-header {
-  margin: 50px 0 25px;
+  margin: 50px 0 30px;
 }
 
 #title {
   text-align: center;
-  font-size: 3rem;
+  font-size: 2.75rem;
   letter-spacing: 1.25px;
 }
 
@@ -50,9 +50,8 @@ body {
 
 /* Player data */
 #player-data {
-  margin: 75px;
+  margin: 70px;
   padding: 20px;
-  line-height: 2.5rem;
 }
 
 #player-header,
@@ -60,16 +59,43 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  line-height: 2.75rem;
 }
 
 #player-description {
-  color: rgb(43, 61, 161);
+  color: #6d6d6d;
+  font-size: 1.05rem;
 }
 
 #player-stats {
   text-align: center;
-  margin: 20px;
+  margin-top: 20px;
   padding: 20px;
+}
+
+.season-avgs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+  gap: 2rem;
+  line-height: 2.5rem;
+}
+
+.avg-main {
+  font-weight: bold;
+}
+
+.avg-secondary {
+  color: #6d6d6d;
+}
+
+.heading-lg {
+  font-size: 2.25rem;
+}
+
+.heading-sm {
+  font-size: 1.15rem;
 }
 
 /* Errors */
@@ -77,7 +103,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgb(90, 90, 90);
+  color: #646464;
+  font-size: 1.05rem;
 }
 
 /* Animation */
