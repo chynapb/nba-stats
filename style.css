@@ -50,7 +50,7 @@ body {
 
 /* Player data */
 #player-data {
-  margin: 50px;
+  margin: 50px 0 30px;
   padding: 20px;
 }
 
@@ -72,16 +72,16 @@ body {
   margin-top: 20px;
 }
 
-.season-avgs {
+.main-avgs {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
+  gap: 2.5rem;
   line-height: 2.25rem;
 }
 
 .avg-main {
-  color: #1d3d96;
+  color: #254499;
   font-weight: bold;
 }
 
@@ -95,6 +95,34 @@ body {
 
 .heading-sm {
   font-size: 1.15rem;
+}
+
+/* Season stats */
+#season-header,
+#season-avgs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#season-header {
+  margin-bottom: 12px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 40%;
+  text-align: center;
+}
+
+td,
+th {
+  border: 1px solid #dddddd;
+  padding: 12px;
+}
+
+td {
+  color: #6d6d6d;
 }
 
 /* Errors */

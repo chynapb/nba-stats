@@ -4,6 +4,9 @@ const playerData = document.getElementById('player-data');
 const playerHeader = document.getElementById('player-header');
 const playerDescription = document.getElementById('player-description');
 const playerStats = document.getElementById('player-stats');
+const seasonHeader = document.getElementById('season-header');
+const seasonStats = document.getElementById('season-stats');
+const seasonAvgs = document.getElementById('season-avgs');
 
 // API endpoints
 const playerUrl = 'https://www.balldontlie.io/api/v1/players/';
@@ -44,7 +47,6 @@ const displayPlayerStats = (stats) => {
     blk,
     dreb,
     fg3_pct,
-    fg3m,
     fg_pct,
     fga,
     ft_pct,
@@ -56,20 +58,13 @@ const displayPlayerStats = (stats) => {
     pf,
     pts,
     reb,
-    season,
     stl,
     turnover,
   } = stats;
 
-  // Stats header
-  // const statsHeader = document.createElement('p');
-  // statsHeader.classList.add('heading-sm');
-  // statsHeader.innerHTML = '2023-24 SEASON STATS';
-  // playerStats.appendChild(statsHeader);
-
-  // Display season averages
-  const seasonAvgs = document.createElement('div');
-  seasonAvgs.innerHTML = `<div class="season-avgs">
+  // Display main player averages
+  const mainAvgs = document.createElement('div');
+  mainAvgs.innerHTML = `<div class="main-avgs">
   <div>
     <p class="heading-md avg-main">${pts.toFixed(1)}</p>
     <p class="heading-sm avg-secondary">PPG</p>
@@ -87,7 +82,56 @@ const displayPlayerStats = (stats) => {
     <p class="heading-sm avg-secondary">FG%</p>
   </div>
 </div>`;
-  playerStats.appendChild(seasonAvgs);
+  playerStats.appendChild(mainAvgs);
+
+  // Season stats header
+  const header = document.createElement('p');
+  header.classList.add('heading-sm');
+  header.innerHTML = '2023-24 SEASON STATS';
+  seasonHeader.appendChild(header);
+
+  // Season stats table
+  const table = document.createElement('div');
+  table.classList.add('stats-table');
+  table.innerHTML = `<table>
+  <tr>
+    <th>GP</th>
+    <th>MIN</th>
+    <th>FG%</th>
+    <th>3P%</th>
+    <th>FTM</th>
+    <th>FTA</th>
+    <th>FT%</th>
+    <th>OREB</th>
+    <th>DREB</th>
+    <th>REB</th>
+    <th>AST</th>
+    <th>STL</th>
+    <th>BLK</th>
+    <th>TOV</th>
+    <th>PF</th>
+    <th>PTS</th>
+  </tr>
+  <tr>
+    <td>${games_played}</td>
+    <td>${min}</td>
+    <td>${(fg_pct * 100).toFixed(1)}</td>
+    <td>${(fg3_pct * 100).toFixed(1)}</td>
+    <td>${ftm.toFixed(1)}</td>
+    <td>${fta.toFixed(1)}</td>
+    <td>${(ft_pct * 100).toFixed(1)}</td>
+    <td>${oreb.toFixed(1)}</td>
+    <td>${dreb.toFixed(1)}</td>
+    <td>${reb.toFixed(1)}</td>
+    <td>${ast.toFixed(1)}</td>
+    <td>${stl.toFixed(1)}</td>
+    <td>${blk.toFixed(1)}</td>
+    <td>${turnover.toFixed(1)}</td>
+    <td>${pf.toFixed(1)}</td>
+    <td>${pts.toFixed(1)}</td>
+  </tr>
+</table>`;
+  seasonAvgs.appendChild(table);
 };
 
 // Display error message
@@ -146,10 +190,12 @@ const search = () => {
           displayPlayerStats(stats);
         })
         .catch((error) => {
+          console.log(error);
           showError('Error fetching player stats. Please try again.');
         });
     })
     .catch((error) => {
+      console.log(error);
       showError('Error fetching player. Please try again.');
     })
     .finally(() => {
