@@ -25,11 +25,13 @@ const displayPlayerInfo = (player) => {
     height_feet === null ? 'N/A' : `${height_feet}'${height_inches}"`;
   const playerWeight = weight_pounds === null ? 'N/A' : `${weight_pounds} lbs`;
 
+  // Display player name
   const nameHeader = document.createElement('h1');
   nameHeader.textContent = `${first_name} ${last_name}`;
   nameHeader.classList.add('heading-lg');
   playerHeader.appendChild(nameHeader);
 
+  // Display player info
   const playerInfo = document.createElement('p');
   playerInfo.innerHTML = `${team.full_name} • ${playerPosition} • ${playerHeight}, ${playerWeight}`;
   playerDescription.appendChild(playerInfo);
@@ -60,28 +62,28 @@ const displayPlayerStats = (stats) => {
   } = stats;
 
   // Stats header
-  const statsHeader = document.createElement('p');
-  statsHeader.classList.add('heading-sm');
-  statsHeader.innerHTML = '2023-24 SEASON STATS';
-  playerStats.appendChild(statsHeader);
+  // const statsHeader = document.createElement('p');
+  // statsHeader.classList.add('heading-sm');
+  // statsHeader.innerHTML = '2023-24 SEASON STATS';
+  // playerStats.appendChild(statsHeader);
 
   // Display season averages
   const seasonAvgs = document.createElement('div');
   seasonAvgs.innerHTML = `<div class="season-avgs">
   <div>
-    <p class="heading-lg avg-main">${pts.toFixed(1)}</p>
+    <p class="heading-md avg-main">${pts.toFixed(1)}</p>
     <p class="heading-sm avg-secondary">PPG</p>
   </div>
   <div>
-    <p class="heading-lg avg-main">${ast.toFixed(1)}</p>
+    <p class="heading-md avg-main">${ast.toFixed(1)}</p>
     <p class="heading-sm avg-secondary">APG</p>
   </div>
   <div>
-    <p class="heading-lg avg-main">${reb.toFixed(1)}</p>
+    <p class="heading-md avg-main">${reb.toFixed(1)}</p>
     <p class="heading-sm avg-secondary">RPG</p>
   </div>
   <div>
-    <p class="heading-lg avg-main">${(fg_pct * 100).toFixed(1) + '%'}</p>
+    <p class="heading-md avg-main">${(fg_pct * 100).toFixed(1) + '%'}</p>
     <p class="heading-sm avg-secondary">FG%</p>
   </div>
 </div>`;
@@ -142,7 +144,6 @@ const search = () => {
           // Fetch player stats and display to DOM
           const stats = data.data[0];
           displayPlayerStats(stats);
-          console.log(stats);
         })
         .catch((error) => {
           showError('Error fetching player stats. Please try again.');

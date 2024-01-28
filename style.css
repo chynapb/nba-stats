@@ -50,7 +50,7 @@ body {
 
 /* Player data */
 #player-data {
-  margin: 70px;
+  margin: 50px;
   padding: 20px;
 }
 
@@ -70,28 +70,27 @@ body {
 #player-stats {
   text-align: center;
   margin-top: 20px;
-  padding: 20px;
 }
 
 .season-avgs {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 15px;
   gap: 2rem;
-  line-height: 2.5rem;
+  line-height: 2.25rem;
 }
 
 .avg-main {
+  color: #1d3d96;
   font-weight: bold;
 }
 
-.avg-secondary {
-  color: #6d6d6d;
+.heading-lg {
+  font-size: 2.5rem;
 }
 
-.heading-lg {
-  font-size: 2.25rem;
+.heading-md {
+  font-size: 2.05rem;
 }
 
 .heading-sm {
