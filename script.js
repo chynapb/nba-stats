@@ -1,16 +1,15 @@
 const searchBox = document.getElementById('searchBox');
-const errorDiv = document.getElementById('error');
-const playerData = document.getElementById('player-data');
-const playerHeader = document.getElementById('player-header');
-const playerDescription = document.getElementById('player-description');
-const playerStats = document.getElementById('player-stats');
-const seasonHeader = document.getElementById('season-header');
-const seasonStats = document.getElementById('season-stats');
-const seasonAvgs = document.getElementById('season-avgs');
 
 // API endpoints
 const playerUrl = 'https://www.balldontlie.io/api/v1/players/';
 const statsUrl = 'https://www.balldontlie.io/api/v1/season_averages';
+
+// Clear previous data on each render
+const clearElements = (...elementIds) => {
+  elementIds.forEach((id) => {
+    document.querySelector(`#${id}`).innerHTML = '';
+  });
+};
 
 // Display player information
 const displayPlayerInfo = (player) => {
@@ -32,12 +31,12 @@ const displayPlayerInfo = (player) => {
   const nameHeader = document.createElement('h1');
   nameHeader.textContent = `${first_name} ${last_name}`;
   nameHeader.classList.add('heading-lg');
-  playerHeader.appendChild(nameHeader);
+  document.querySelector('#player-header').appendChild(nameHeader);
 
   // Display player info
   const playerInfo = document.createElement('p');
   playerInfo.innerHTML = `${team.full_name} • ${playerPosition} • ${playerHeight}, ${playerWeight}`;
-  playerDescription.appendChild(playerInfo);
+  document.querySelector('#player-description').appendChild(playerInfo);
 };
 
 // Display player stats
@@ -48,7 +47,6 @@ const displayPlayerStats = (stats) => {
     dreb,
     fg3_pct,
     fg_pct,
-    fga,
     ft_pct,
     fta,
     ftm,
@@ -62,92 +60,180 @@ const displayPlayerStats = (stats) => {
     turnover,
   } = stats;
 
-  // Display main player averages
-  const mainAvgs = document.createElement('div');
-  mainAvgs.innerHTML = `<div class="main-avgs">
-  <div>
-    <p class="heading-md avg-main">${pts.toFixed(1)}</p>
-    <p class="heading-sm avg-secondary">PPG</p>
-  </div>
-  <div>
-    <p class="heading-md avg-main">${ast.toFixed(1)}</p>
-    <p class="heading-sm avg-secondary">APG</p>
-  </div>
-  <div>
-    <p class="heading-md avg-main">${reb.toFixed(1)}</p>
-    <p class="heading-sm avg-secondary">RPG</p>
-  </div>
-  <div>
-    <p class="heading-md avg-main">${(fg_pct * 100).toFixed(1) + '%'}</p>
-    <p class="heading-sm avg-secondary">FG%</p>
-  </div>
-</div>`;
-  playerStats.appendChild(mainAvgs);
+  displayMainAverages({ pts, ast, reb, fg_pct });
+  displaySeasonStatsHeader();
+  displaySeasonStatsTable({
+    games_played,
+    min,
+    fg_pct,
+    fg3_pct,
+    ftm,
+    fta,
+    ft_pct,
+    oreb,
+    dreb,
+    reb,
+    ast,
+    stl,
+    blk,
+    pts,
+    turnover,
+    pf,
+  });
+};
 
-  // Season stats header
+// Display main player averages
+const displayMainAverages = ({ pts, ast, reb, fg_pct }) => {
+  const mainAvgs = document.createElement('div');
+  mainAvgs.innerHTML = `
+    <div class="main-avgs">
+      ${createMainAvgItem('PPG', pts.toFixed(1))}
+      ${createMainAvgItem('APG', ast.toFixed(1))}
+      ${createMainAvgItem('RPG', reb.toFixed(1))}
+      ${createMainAvgItem('FG%', (fg_pct * 100).toFixed(1) + '%')}
+    </div>`;
+  document.querySelector('#player-stats').appendChild(mainAvgs);
+};
+
+// Function to create main average item
+const createMainAvgItem = (label, value) => `
+  <div>
+    <p class="heading-md avg-main">${value}</p>
+    <p class="heading-sm avg-secondary">${label}</p>
+  </div>
+`;
+
+// Display season stats header
+const displaySeasonStatsHeader = () => {
   const header = document.createElement('p');
   header.classList.add('heading-sm');
-  header.innerHTML = '2023-24 SEASON STATS';
-  seasonHeader.appendChild(header);
+  header.textContent = '2023-24 SEASON STATS';
+  document.querySelector('#season-header').appendChild(header);
+};
 
-  // Season stats table
+// Display season stats table
+const displaySeasonStatsTable = (stats) => {
+  const {
+    games_played,
+    min,
+    fg_pct,
+    fg3_pct,
+    ftm,
+    fta,
+    ft_pct,
+    oreb,
+    dreb,
+    reb,
+    ast,
+    stl,
+    blk,
+    turnover,
+    pts,
+    pf,
+  } = stats;
+
   const table = document.createElement('div');
   table.classList.add('stats-table');
-  table.innerHTML = `<table>
-  <tr>
-    <th>GP</th>
-    <th>MIN</th>
-    <th>FG%</th>
-    <th>3P%</th>
-    <th>FTM</th>
-    <th>FTA</th>
-    <th>FT%</th>
-    <th>OREB</th>
-    <th>DREB</th>
-    <th>REB</th>
-    <th>AST</th>
-    <th>STL</th>
-    <th>BLK</th>
-    <th>TOV</th>
-    <th>PF</th>
-    <th>PTS</th>
-  </tr>
-  <tr>
-    <td>${games_played}</td>
-    <td>${min}</td>
-    <td>${(fg_pct * 100).toFixed(1)}</td>
-    <td>${(fg3_pct * 100).toFixed(1)}</td>
-    <td>${ftm.toFixed(1)}</td>
-    <td>${fta.toFixed(1)}</td>
-    <td>${(ft_pct * 100).toFixed(1)}</td>
-    <td>${oreb.toFixed(1)}</td>
-    <td>${dreb.toFixed(1)}</td>
-    <td>${reb.toFixed(1)}</td>
-    <td>${ast.toFixed(1)}</td>
-    <td>${stl.toFixed(1)}</td>
-    <td>${blk.toFixed(1)}</td>
-    <td>${turnover.toFixed(1)}</td>
-    <td>${pf.toFixed(1)}</td>
-    <td>${pts.toFixed(1)}</td>
-  </tr>
-</table>`;
-  seasonAvgs.appendChild(table);
+  table.innerHTML = `
+    <table>
+      <tr>
+        <th>GP</th>
+        <th>MIN</th>
+        <th>FG%</th>
+        <th>3P%</th>
+        <th>FTM</th>
+        <th>FTA</th>
+        <th>FT%</th>
+        <th>OREB</th>
+        <th>DREB</th>
+        <th>REB</th>
+        <th>AST</th>
+        <th>STL</th>
+        <th>BLK</th>
+        <th>TOV</th>
+        <th>PF</th>
+        <th>PTS</th>
+      </tr>
+      <tr>
+        <td>${games_played}</td>
+        <td>${min}</td>
+        <td>${(fg_pct * 100).toFixed(1)}</td>
+        <td>${(fg3_pct * 100).toFixed(1)}</td>
+        <td>${ftm.toFixed(1)}</td>
+        <td>${fta.toFixed(1)}</td>
+        <td>${(ft_pct * 100).toFixed(1)}</td>
+        <td>${oreb.toFixed(1)}</td>
+        <td>${dreb.toFixed(1)}</td>
+        <td>${reb.toFixed(1)}</td>
+        <td>${ast.toFixed(1)}</td>
+        <td>${stl.toFixed(1)}</td>
+        <td>${blk.toFixed(1)}</td>
+        <td>${turnover.toFixed(1)}</td>
+        <td>${pf.toFixed(1)}</td>
+        <td>${pts.toFixed(1)}</td>
+      </tr>
+    </table>`;
+  document.querySelector('#season-avgs').appendChild(table);
 };
 
 // Display error message
 const showError = (message) => {
-  // Clear previous data
-  errorDiv.innerHTML = '';
+  clearElements(
+    'error',
+    'player-header',
+    'player-description',
+    'player-stats',
+    'season-avgs',
+    'season-header'
+  );
 
   // Display error message
   const errorMsg = document.createElement('p');
   errorMsg.innerHTML = message;
   errorMsg.classList.add('error');
-  errorDiv.appendChild(errorMsg);
+  document.querySelector('#error').appendChild(errorMsg);
+};
+
+// Fetch player data
+const fetchPlayerData = async (searchTerm) => {
+  try {
+    const response = await fetch(playerUrl + `?search=${searchTerm}`);
+    const data = await response.json();
+
+    if (!data.data || data.data.length === 0) {
+      showError('Player not found: Please try your search again.');
+      return null;
+    }
+
+    return data.data[0];
+  } catch (error) {
+    console.log(error);
+    showError('Error fetching player. Please try again.');
+    return null;
+  }
+};
+
+// Fetch player stats
+const fetchPlayerStats = async (playerId) => {
+  try {
+    const response = await fetch(statsUrl + `?player_ids[]=${playerId}`);
+    const data = await response.json();
+
+    if (!data.data || data.data.length === 0) {
+      showError('Player stats not found for the current NBA season.');
+      return null;
+    }
+
+    return data.data[0];
+  } catch (error) {
+    console.log(error);
+    showError('Error fetching player stats. Please try again.');
+    return null;
+  }
 };
 
 // Fetch data on search
-const search = () => {
+const search = async () => {
   const searchTerm = searchBox.value.trim();
 
   if (!searchTerm) {
@@ -155,52 +241,38 @@ const search = () => {
     return;
   }
 
-  fetch(playerUrl + `?search=${searchTerm}`)
-    .then((response) => response.json())
-    .then((data) => {
-      if (!data.data || data.data.length === 0) {
-        showError('Player not found: Please try your search again.');
-        return;
-      }
-      // Clear previous data
-      errorDiv.innerHTML = '';
-      playerHeader.innerHTML = '';
-      playerDescription.innerHTML = '';
-      playerStats.innerHTML = '';
+  try {
+    // Clear previous data
+    clearElements(
+      'error',
+      'player-header',
+      'player-description',
+      'season-avgs',
+      'season-header',
+      'player-stats'
+    );
 
-      const player = data.data[0];
-      // Fetch player info and display to DOM
-      displayPlayerInfo(player);
+    // Fetch player data
+    const player = await fetchPlayerData(searchTerm);
 
-      // Fetch stats using player id
-      const playerId = player.id;
+    if (!player) {
+      return;
+    }
 
-      fetch(statsUrl + `?player_ids[]=${playerId}`)
-        .then((response) => response.json())
-        .then((data) => {
-          if (!data.data || data.data.length === 0) {
-            showError('Player stats not found for the current NBA season.');
-            return;
-          }
-          // Clear previous data
-          playerStats.innerHTML = '';
+    // Display player info to DOM
+    displayPlayerInfo(player);
 
-          // Fetch player stats and display to DOM
-          const stats = data.data[0];
-          displayPlayerStats(stats);
-        })
-        .catch((error) => {
-          console.log(error);
-          showError('Error fetching player stats. Please try again.');
-        });
-    })
-    .catch((error) => {
-      console.log(error);
-      showError('Error fetching player. Please try again.');
-    })
-    .finally(() => {
-      searchBox.value = '';
-    });
+    // Fetch player stats using player id
+    const playerId = player.id;
+    const stats = await fetchPlayerStats(playerId);
+
+    if (stats) {
+      // Display player stats to DOM
+      displayPlayerStats(stats);
+    }
+  } finally {
+    searchBox.value = '';
+  }
 };
 
 // Accept enter key
