@@ -4,13 +4,6 @@ const searchBox = document.getElementById('searchBox');
 const playerUrl = 'https://www.balldontlie.io/api/v1/players/';
 const statsUrl = 'https://www.balldontlie.io/api/v1/season_averages';
 
-// Clear previous data on each render
-const clearElements = (...elementIds) => {
-  elementIds.forEach((id) => {
-    document.querySelector(`#${id}`).innerHTML = '';
-  });
-};
-
 // Display player information
 const displayPlayerInfo = (player) => {
   const {
@@ -95,7 +88,7 @@ const displayMainAverages = ({ pts, ast, reb, fg_pct }) => {
   document.querySelector('#player-stats').appendChild(mainAvgs);
 };
 
-// Function to create main average item
+// Create main average item
 const createMainAvgItem = (label, value) => `
   <div>
     <p class="heading-md avg-main">${value}</p>
@@ -176,26 +169,10 @@ const displaySeasonStatsTable = (stats) => {
   document.querySelector('#season-avgs').appendChild(table);
 };
 
-// Display error message
-const showError = (message) => {
-  clearElements(
-    'error',
-    'player-header',
-    'player-description',
-    'player-stats',
-    'season-avgs',
-    'season-header'
-  );
-
-  // Display error message
-  const errorMsg = document.createElement('p');
-  errorMsg.innerHTML = message;
-  errorMsg.classList.add('error');
-  document.querySelector('#error').appendChild(errorMsg);
-};
-
 // Fetch player data
 const fetchPlayerData = async (searchTerm) => {
+  showSpinner();
+
   try {
     const response = await fetch(playerUrl + `?search=${searchTerm}`);
     const data = await response.json();
@@ -204,6 +181,8 @@ const fetchPlayerData = async (searchTerm) => {
       showError('Player not found: Please try your search again.');
       return null;
     }
+
+    hideSpinner();
 
     return data.data[0];
   } catch (error) {
@@ -215,6 +194,8 @@ const fetchPlayerData = async (searchTerm) => {
 
 // Fetch player stats
 const fetchPlayerStats = async (playerId) => {
+  showSpinner();
+
   try {
     const response = await fetch(statsUrl + `?player_ids[]=${playerId}`);
     const data = await response.json();
@@ -223,6 +204,8 @@ const fetchPlayerStats = async (playerId) => {
       showError('Player stats not found for the current NBA season.');
       return null;
     }
+
+    hideSpinner();
 
     return data.data[0];
   } catch (error) {
@@ -273,6 +256,42 @@ const search = async () => {
   } finally {
     searchBox.value = '';
   }
+};
+
+// Display error message
+const showError = (message) => {
+  clearElements(
+    'error',
+    'player-header',
+    'player-description',
+    'player-stats',
+    'season-avgs',
+    'season-header'
+  );
+
+  // Display error message
+  const errorMsg = document.createElement('p');
+  errorMsg.innerHTML = message;
+  errorMsg.classList.add('error');
+  document.querySelector('#error').appendChild(errorMsg);
+
+  hideSpinner();
+};
+
+// Show and hide loading spinner
+const showSpinner = () => {
+  document.querySelector('.spinner').classList.add('show');
+};
+
+const hideSpinner = () => {
+  document.querySelector('.spinner').classList.remove('show');
+};
+
+// Clear previous data on each render
+const clearElements = (...elementIds) => {
+  elementIds.forEach((id) => {
+    document.querySelector(`#${id}`).innerHTML = '';
+  });
 };
 
 // Accept enter key
