@@ -4,6 +4,40 @@ const searchBox = document.getElementById('searchBox');
 const playerUrl = 'https://www.balldontlie.io/api/v1/players/';
 const statsUrl = 'https://www.balldontlie.io/api/v1/season_averages';
 
+// Team colors
+const teamColors = {
+  ATL: { header: '#E03A3E', stats: '#C1D32F' },
+  BOS: { header: '#007A33', stats: '#BA9653' },
+  BKN: { header: '#000000', stats: '#000000' },
+  CHA: { header: '#1D1160', stats: '#00788C' },
+  CHI: { header: '#CE1141', stats: '#00788C' },
+  CLE: { header: '#860038', stats: '#041E42' },
+  DAL: { header: '#00538C', stats: '#002B5E' },
+  DEN: { header: '#0E2240', stats: '#FEC524' },
+  DET: { header: '#C8102E', stats: '#1D42BA' },
+  GSW: { header: '#1D428A', stats: '#FFC72C' },
+  HOU: { header: '#CE1141', stats: '#000000' },
+  IND: { header: '#002D62', stats: '#FDBB30' },
+  LAC: { header: '#C8102E', stats: '#1D428A' },
+  LAL: { header: '#552583', stats: '#FDB927' },
+  MEM: { header: '#12173F', stats: '#5D76A9' },
+  MIA: { header: '#98002E', stats: '#000000' },
+  MIL: { header: '#00471B', stats: '#000000' },
+  MIN: { header: '#0C2340', stats: '#236192' },
+  NOP: { header: '#0C2340', stats: '#C8102E' },
+  NYK: { header: '#006BB6', stats: '#F58426' },
+  OKC: { header: '#007AC1', stats: '#EF3B24' },
+  ORL: { header: '#0077C0', stats: '#000000' },
+  PHI: { header: '#006BB6', stats: '#ED174C' },
+  POR: { header: '#E03A3E', stats: '#C1D32F' },
+  SAC: { header: '#5A2D81', stats: '#63727A' },
+  SAS: { header: '#000000', stats: '#C4CED4' },
+  TOR: { header: '#CE1141', stats: '#000000' },
+  UTA: { header: '#002B5C', stats: '#00471B' },
+  WAS: { header: '#002B5C', stats: '#E31837' },
+  default: { header: '#2c2c2c', stats: '#2c2c2c' },
+};
+
 // Display player information
 const displayPlayerInfo = (player) => {
   const {
@@ -30,6 +64,14 @@ const displayPlayerInfo = (player) => {
   const playerInfo = document.createElement('p');
   playerInfo.innerHTML = `${team.full_name} • ${playerPosition} • ${playerHeight}, ${playerWeight}`;
   document.querySelector('#player-description').appendChild(playerInfo);
+
+  // Change player text color based on team
+  const teamAbbreviation = player.team.abbreviation || 'default';
+
+  document.querySelector('#player-header').style.color =
+    teamColors[teamAbbreviation].header;
+  document.querySelector('#player-stats').style.color =
+    teamColors[teamAbbreviation].stats;
 };
 
 // Display player stats
