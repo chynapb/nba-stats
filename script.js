@@ -29,6 +29,7 @@ const teamColors = {
   OKC: { header: '#007AC1', stats: '#EF3B24' },
   ORL: { header: '#0077C0', stats: '#000000' },
   PHI: { header: '#006BB6', stats: '#ED174C' },
+  PHX: { header: '#1D1160', stats: '#E56020' },
   POR: { header: '#E03A3E', stats: '#C1D32F' },
   SAC: { header: '#5A2D81', stats: '#63727A' },
   SAS: { header: '#000000', stats: '#C4CED4' },
