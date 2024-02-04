@@ -94,6 +94,7 @@ const displayPlayerStats = (stats) => {
     reb,
     stl,
     turnover,
+    season,
   } = stats;
 
   displayMainAverages({ pts, ast, reb, fg_pct });
@@ -115,6 +116,7 @@ const displayPlayerStats = (stats) => {
     pts,
     turnover,
     pf,
+    season,
   });
 };
 
@@ -166,6 +168,7 @@ const displaySeasonStatsTable = (stats) => {
     turnover,
     pts,
     pf,
+    season,
   } = stats;
 
   const table = document.createElement('div');
@@ -173,6 +176,7 @@ const displaySeasonStatsTable = (stats) => {
   table.innerHTML = `
     <table>
       <tr>
+        <th>SEASON</th>
         <th>GP</th>
         <th>MIN</th>
         <th>FG%</th>
@@ -191,6 +195,7 @@ const displaySeasonStatsTable = (stats) => {
         <th>PTS</th>
       </tr>
       <tr>
+        <td>${season}</td>
         <td>${games_played}</td>
         <td>${min}</td>
         <td>${(fg_pct * 100).toFixed(1)}</td>
@@ -237,14 +242,18 @@ const fetchPlayerData = async (searchTerm) => {
 
 // Fetch player stats
 const fetchPlayerStats = async (playerId) => {
+  const selectedSeason = document.getElementById('season-dropdown').value;
+
   showSpinner();
 
   try {
-    const response = await fetch(statsUrl + `?player_ids[]=${playerId}`);
+    const response = await fetch(
+      statsUrl + `?season=${selectedSeason}&player_ids[]=${playerId}`
+    );
     const data = await response.json();
 
     if (!data.data || data.data.length === 0) {
-      showError('Player stats not found for the current NBA season.');
+      showError('Player stats not found for this NBA season.');
       return null;
     }
 
@@ -300,6 +309,24 @@ const search = async () => {
     searchBox.value = '';
   }
 };
+
+// Season dropdown menu
+const displayDropdownMenu = () => {
+  const dropdown = document.getElementById('season-dropdown');
+
+  const startYear = 1950;
+  const endYear = new Date().getFullYear() - 1;
+
+  // Populate dropdown with years
+  for (let year = endYear; year >= startYear; year--) {
+    const option = document.createElement('option');
+    option.text = `${year}-${year + 1}`;
+    option.value = year;
+    dropdown.add(option);
+  }
+};
+
+displayDropdownMenu();
 
 // Display error message
 const showError = (message) => {

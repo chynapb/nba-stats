@@ -128,6 +128,13 @@ td {
   color: #6d6d6d;
 }
 
+/* Season dropdown menu */
+#dropdown-menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Errors */
 .error {
   display: flex;
