@@ -10,7 +10,7 @@ const teamColors = {
   BOS: { header: '#007A33', stats: '#BA9653' },
   BKN: { header: '#000000', stats: '#000000' },
   CHA: { header: '#1D1160', stats: '#00788C' },
-  CHI: { header: '#CE1141', stats: '#00788C' },
+  CHI: { header: '#CE1141', stats: '#000000' },
   CLE: { header: '#860038', stats: '#041E42' },
   DAL: { header: '#00538C', stats: '#002B5E' },
   DEN: { header: '#0E2240', stats: '#FEC524' },
@@ -50,10 +50,6 @@ const displayPlayerInfo = (player) => {
     height_inches,
     weight_pounds,
   } = player;
-  const playerPosition = position === '' ? 'N/A' : position;
-  const playerHeight =
-    height_feet === null ? 'N/A' : `${height_feet}'${height_inches}"`;
-  const playerWeight = weight_pounds === null ? 'N/A' : `${weight_pounds} lbs`;
 
   // Display player name
   const nameHeader = document.createElement('h1');
@@ -63,7 +59,21 @@ const displayPlayerInfo = (player) => {
 
   // Display player info
   const playerInfo = document.createElement('p');
-  playerInfo.innerHTML = `${team.full_name} • ${playerPosition} • ${playerHeight}, ${playerWeight}`;
+
+  // Check if position, height, and weight are available before displaying
+  const playerPosition = position ? position : '';
+  const playerHeight =
+    height_feet !== null ? `${height_feet}'${height_inches}"` : '';
+  const playerWeight = weight_pounds !== null ? `${weight_pounds} lbs` : '';
+
+  // Display all available player info
+  let infoString = `${team.full_name}`;
+  if (playerPosition) infoString += ` • ${playerPosition}`;
+  if (playerHeight || playerWeight) {
+    infoString += ` • ${playerHeight}, ${playerWeight}`;
+  }
+
+  playerInfo.innerHTML = infoString;
   document.querySelector('#player-description').appendChild(playerInfo);
 
   // Change player text color based on team
@@ -98,7 +108,7 @@ const displayPlayerStats = (stats) => {
   } = stats;
 
   displayMainAverages({ pts, ast, reb, fg_pct });
-  displaySeasonStatsHeader();
+  displaySeasonStatsHeader({ season });
   displaySeasonStatsTable({
     games_played,
     min,
@@ -142,10 +152,10 @@ const createMainAvgItem = (label, value) => `
 `;
 
 // Display season stats header
-const displaySeasonStatsHeader = () => {
+const displaySeasonStatsHeader = ({ season }) => {
   const header = document.createElement('p');
   header.classList.add('heading-sm');
-  header.textContent = '2023-24 SEASON STATS';
+  header.textContent = `${season}-${season + 1} SEASON STATS`;
   document.querySelector('#season-header').appendChild(header);
 };
 
@@ -178,39 +188,39 @@ const displaySeasonStatsTable = (stats) => {
       <tr>
         <th>SEASON</th>
         <th>GP</th>
-        <th>MIN</th>
+        <th class="screen-md">MIN</th>
         <th>FG%</th>
         <th>3P%</th>
-        <th>FTM</th>
-        <th>FTA</th>
+        <th class="screen-md">FTM</th>
+        <th class="screen-md">FTA</th>
         <th>FT%</th>
-        <th>OREB</th>
-        <th>DREB</th>
+        <th class="screen-sm">OREB</th>
+        <th class="screen-sm">DREB</th>
         <th>REB</th>
         <th>AST</th>
         <th>STL</th>
         <th>BLK</th>
-        <th>TOV</th>
-        <th>PF</th>
+        <th class="screen-sm">TOV</th>
+        <th class="screen-sm">PF</th>
         <th>PTS</th>
       </tr>
       <tr>
         <td>${season}</td>
         <td>${games_played}</td>
-        <td>${min}</td>
+        <td class="screen-md">${min}</td>
         <td>${(fg_pct * 100).toFixed(1)}</td>
         <td>${(fg3_pct * 100).toFixed(1)}</td>
-        <td>${ftm.toFixed(1)}</td>
-        <td>${fta.toFixed(1)}</td>
+        <td class="screen-md">${ftm.toFixed(1)}</td>
+        <td class="screen-md">${fta.toFixed(1)}</td>
         <td>${(ft_pct * 100).toFixed(1)}</td>
-        <td>${oreb.toFixed(1)}</td>
-        <td>${dreb.toFixed(1)}</td>
+        <td class="screen-sm">${oreb.toFixed(1)}</td>
+        <td class="screen-sm">${dreb.toFixed(1)}</td>
         <td>${reb.toFixed(1)}</td>
         <td>${ast.toFixed(1)}</td>
         <td>${stl.toFixed(1)}</td>
         <td>${blk.toFixed(1)}</td>
-        <td>${turnover.toFixed(1)}</td>
-        <td>${pf.toFixed(1)}</td>
+        <td class="screen-sm">${turnover.toFixed(1)}</td>
+        <td class="screen-sm">${pf.toFixed(1)}</td>
         <td>${pts.toFixed(1)}</td>
       </tr>
     </table>`;
@@ -241,9 +251,7 @@ const fetchPlayerData = async (searchTerm) => {
 };
 
 // Fetch player stats
-const fetchPlayerStats = async (playerId) => {
-  const selectedSeason = document.getElementById('season-dropdown').value;
-
+const fetchPlayerStats = async (playerId, selectedSeason) => {
   showSpinner();
 
   try {
@@ -253,7 +261,9 @@ const fetchPlayerStats = async (playerId) => {
     const data = await response.json();
 
     if (!data.data || data.data.length === 0) {
-      showError('Player stats not found for this NBA season.');
+      showError(
+        'Player stats not found for this NBA season. Try selecting a different year.'
+      );
       return null;
     }
 
@@ -270,6 +280,7 @@ const fetchPlayerStats = async (playerId) => {
 // Fetch data on search
 const search = async () => {
   const searchTerm = searchBox.value.trim();
+  const selectedSeason = seasonDropdown.value;
 
   if (!searchTerm) {
     alert('Please enter a player.');
@@ -294,19 +305,21 @@ const search = async () => {
       return;
     }
 
+    searchBox.value = `${player.first_name} ${player.last_name}`;
+
     // Display player info to DOM
     displayPlayerInfo(player);
 
     // Fetch player stats using player id
     const playerId = player.id;
-    const stats = await fetchPlayerStats(playerId);
+    const stats = await fetchPlayerStats(playerId, selectedSeason);
 
     if (stats) {
       // Display player stats to DOM
       displayPlayerStats(stats);
     }
-  } finally {
-    searchBox.value = '';
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -314,7 +327,7 @@ const search = async () => {
 const displayDropdownMenu = () => {
   const dropdown = document.getElementById('season-dropdown');
 
-  const startYear = 1950;
+  const startYear = 1970;
   const endYear = new Date().getFullYear() - 1;
 
   // Populate dropdown with years
@@ -325,8 +338,6 @@ const displayDropdownMenu = () => {
     dropdown.add(option);
   }
 };
-
-displayDropdownMenu();
 
 // Display error message
 const showError = (message) => {
@@ -364,7 +375,18 @@ const clearElements = (...elementIds) => {
   });
 };
 
-// Accept enter key
+// Event listeners
+
+// Display season dropdown menu on page load
+document.addEventListener('DOMContentLoaded', displayDropdownMenu);
+
+// Search stats when the selected season changes
+const seasonDropdown = document.getElementById('season-dropdown');
+seasonDropdown.addEventListener('change', () => {
+  search();
+});
+
+// Accept enter key on search
 searchBox.addEventListener('keypress', (e) => {
   if (e.key === 'Enter') {
     search();
