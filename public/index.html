@@ -26,22 +26,35 @@
     <!-- Search -->
     <div id="search">
       <input
-        type="text"
-        id="searchBox"
-        placeholder="Search any NBA player..."
+        type="search"
+        id="firstName"
+        class="searchBox"
+        placeholder="Enter first name"
+      />
+      <input
+        type="search"
+        id="lastName"
+        class="searchBox"
+        placeholder="Enter last name"
       />
     </div>
 
     <!-- Season dropdown -->
     <div id="dropdown-menu">
       <label for="season-dropdown">Season:</label>
-      <select id="season-dropdown"></select>
+      <select id="season-dropdown">
+        <option value="" selected>Select season</option>
+      </select>
     </div>
 
     <!-- Player data -->
     <div id="player-data">
       <div id="player-header"></div>
       <div id="player-description"></div>
+      <div id="player-background">
+        <div id="draft-info"></div>
+        <div id="college-info"></div>
+      </div>
       <div id="player-stats"></div>
     </div>
 

@@ -38,18 +38,17 @@ body {
   justify-content: center;
 }
 
-#searchBox {
+.searchBox {
   color: var(--color-primary);
-  border-radius: 35px;
   border: 1px solid #aaaaaa;
   outline: none;
-  padding: 14px;
-  width: 350px;
+  padding: 5px;
+  width: 150px;
   font-size: 16px;
 }
 
-#searchBox:hover {
-  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.075);
+.searchBox:hover {
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.075);
   transition: all 0.3s ease-in-out;
 }
 
@@ -78,7 +77,7 @@ select:hover {
 
 /* Player data */
 #player-data {
-  margin: 50px 0 20px;
+  margin: 40px 0 10px;
   padding: 20px;
 }
 
@@ -91,17 +90,31 @@ select:hover {
 }
 
 #player-header h1 {
-  font-size: 1.95rem;
+  font-size: 2.25rem;
 }
 
 #player-description {
+  color: var(--color-primary);
+  font-size: 1.25rem;
+}
+
+#player-background {
+  margin-top: 5px;
+}
+
+#draft-info,
+#college-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--color-secondary);
-  font-size: 1.05rem;
+  font-size: 1.07rem;
+  line-height: 1.75rem;
 }
 
 #player-stats {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 40px;
 }
 
 .main-avgs {
@@ -284,6 +297,60 @@ td {
 }
 
 /* Media queries */
+@media screen and (max-width: 450px) {
+  #player-header h1 {
+    font-size: 1.75rem;
+  }
+
+  #player-description {
+    text-align: center;
+    font-size: 1.05rem;
+  }
+
+  .heading-lg {
+    font-size: 2.15rem;
+  }
+
+  .heading-md {
+    font-size: 1.65rem;
+  }
+
+  table {
+    font-size: 0.75rem;
+  }
+
+  th,
+  td {
+    padding: 5px;
+  }
+
+  .screen-xsm {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  #player-header h1 {
+    font-size: 1.85rem;
+  }
+
+  #player-description {
+    font-size: 1.15rem;
+  }
+
+  .heading-md {
+    font-size: 1.75rem;
+  }
+
+  table {
+    font-size: 1rem;
+  }
+
+  .screen-sm {
+    display: none;
+  }
+}
+
 @media screen and (max-width: 1000px) {
   th,
   td {
@@ -291,21 +358,6 @@ td {
   }
 
   .screen-md {
-    display: none;
-  }
-}
-
-@media screen and (max-width: 700px) {
-  table {
-    font-size: 1rem;
-  }
-
-  th,
-  td {
-    padding: 10px;
-  }
-
-  .screen-sm {
     display: none;
   }
 }
