@@ -374,6 +374,11 @@ const search = async () => {
       return;
     }
 
+    if (player.first_name === undefined || player.last_name === undefined) {
+      showError('Player not found: Please try your search again.');
+      return;
+    }
+
     firstNameInput.value = `${player.first_name}`;
     lastNameInput.value = `${player.last_name}`;
 
