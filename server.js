@@ -52,7 +52,7 @@ app.get('/api/stats', async (req, res) => {
       `${process.env.API_STATS_URL}?season=${selectedSeason}&player_ids[]=${playerId}`,
       {
         headers: {
-          Authorization: '3b1beaad-9502-41a1-b20c-355457b8342b',
+          Authorization: `${process.env.API_KEY}`,
         },
       }
     );
