@@ -317,15 +317,13 @@ const fetchPlayerStats = async (playerId, selectedSeason) => {
     const response = await fetch(
       `/api/stats?playerId=${playerId}&selectedSeason=${selectedSeason}`
     );
-    const data = await response.json();
 
-    if (data.length === 0) {
-      hideSpinner();
+    if (!response.ok) {
       showError(
         'Player stats not found for this NBA season. Try selecting a different year.'
       );
-      return null;
     }
+    const data = await response.json();
 
     hideSpinner();
 
@@ -333,7 +331,6 @@ const fetchPlayerStats = async (playerId, selectedSeason) => {
   } catch (error) {
     console.log(error);
     hideSpinner();
-    showError('Error fetching player stats. Please try again.');
     return null;
   }
 };
@@ -389,7 +386,7 @@ const search = async () => {
     const playerId = player.id;
     const stats = await fetchPlayerStats(playerId, selectedSeason);
 
-    if (stats) {
+    if (!stats) {
       // Display player stats to DOM
       displayPlayerStats(stats);
     }
