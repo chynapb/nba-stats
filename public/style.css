@@ -181,6 +181,7 @@ td {
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
   color: #646464;
   font-size: 1.05rem;
 }

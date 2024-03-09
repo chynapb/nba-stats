@@ -33,13 +33,12 @@ app.get('/api/players', async (req, res) => {
     const data = await response.json();
 
     if (!data.data || data.data.length === 0) {
-      return res.status(404).json({ error: 'Player not found' });
+      return res.status(404).json({ error: 'Player not found.' });
     }
 
     res.json(data.data[0]);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error fetching player data' });
+    res.status(500).json({ error: 'Error fetching player data.' });
   }
 });
 
@@ -59,13 +58,12 @@ app.get('/api/stats', async (req, res) => {
     const data = await response.json();
 
     if (!data.data || data.data.length === 0) {
-      return res.status(404).json({ error: 'Player stats not found' });
+      return res.status(404).json({ error: 'Player stats not found.' });
     }
 
     res.json(data.data[0]);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error fetching player stats' });
+    res.status(500).json({ error: 'Error fetching player stats.' });
   }
 });
 
