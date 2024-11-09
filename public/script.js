@@ -1,7 +1,7 @@
-const getStatsBtn = document.getElementById('statsBtn');
-const firstNameInput = document.getElementById('firstName');
-const lastNameInput = document.getElementById('lastName');
-const seasonDropdown = document.getElementById('season-dropdown');
+const getStatsBtn = document.getElementById('statsBtn')
+const firstNameInput = document.getElementById('firstName')
+const lastNameInput = document.getElementById('lastName')
+const seasonDropdown = document.getElementById('season-dropdown')
 
 // Team colors
 const teamColors = {
@@ -36,7 +36,7 @@ const teamColors = {
   UTA: { header: '#002B5C', stats: '#00471B' },
   WAS: { header: '#002B5C', stats: '#E31837' },
   default: { header: '#2c2c2c', stats: '#2c2c2c' },
-};
+}
 
 // Display player information
 const displayPlayerInfo = (player) => {
@@ -52,48 +52,48 @@ const displayPlayerInfo = (player) => {
     draft_year,
     draft_round,
     draft_number,
-  } = player;
+  } = player
 
   // Display player name
-  const nameHeader = document.createElement('h1');
-  nameHeader.textContent = `${first_name} ${last_name}`;
-  nameHeader.classList.add('heading-lg');
-  document.querySelector('#player-header').appendChild(nameHeader);
+  const nameHeader = document.createElement('h1')
+  nameHeader.textContent = `${first_name} ${last_name}`
+  nameHeader.classList.add('heading-lg')
+  document.querySelector('#player-header').appendChild(nameHeader)
 
   // Display player info
   // Check if position, height, and weight are available before displaying
-  const playerPosition = position ? position : '';
-  const playerHeight = height !== null ? `${height} ft` : '';
-  const playerWeight = weight !== null ? `${weight} lbs` : '';
+  const playerPosition = position ? position : ''
+  const playerHeight = height !== null ? `${height} ft` : ''
+  const playerWeight = weight !== null ? `${weight} lbs` : ''
 
   // Display all available player info
-  let infoString = `${team.full_name} • #${jersey_number}`;
-  if (playerPosition) infoString += ` • ${playerPosition}`;
+  let infoString = `${team.full_name} • #${jersey_number}`
+  if (playerPosition) infoString += ` • ${playerPosition}`
   if (playerHeight || playerWeight) {
-    infoString += ` • ${playerHeight}, ${playerWeight}`;
+    infoString += ` • ${playerHeight}, ${playerWeight}`
   }
 
-  const playerInfo = document.createElement('p');
-  playerInfo.innerHTML = infoString;
-  document.querySelector('#player-description').appendChild(playerInfo);
+  const playerInfo = document.createElement('p')
+  playerInfo.innerHTML = infoString
+  document.querySelector('#player-description').appendChild(playerInfo)
 
   // Display player draft and college info
-  const draftInfo = document.createElement('p');
-  draftInfo.innerHTML = `Draft Info: ${draft_year} | Round ${draft_round}, Pick ${draft_number}`;
-  document.querySelector('#draft-info').appendChild(draftInfo);
+  const draftInfo = document.createElement('p')
+  draftInfo.innerHTML = `Draft Info: ${draft_year} | Round ${draft_round}, Pick ${draft_number}`
+  document.querySelector('#draft-info').appendChild(draftInfo)
 
-  const collegeInfo = document.createElement('p');
-  collegeInfo.innerHTML = `College: ${college}`;
-  document.querySelector('#college-info').appendChild(collegeInfo);
+  const collegeInfo = document.createElement('p')
+  collegeInfo.innerHTML = `College: ${college}`
+  document.querySelector('#college-info').appendChild(collegeInfo)
 
   // Change player text color based on team
-  const teamAbbreviation = player.team.abbreviation || 'default';
+  const teamAbbreviation = player.team.abbreviation || 'default'
 
   document.querySelector('#player-header').style.color =
-    teamColors[teamAbbreviation].header;
+    teamColors[teamAbbreviation].header
   document.querySelector('#player-stats').style.color =
-    teamColors[teamAbbreviation].stats;
-};
+    teamColors[teamAbbreviation].stats
+}
 
 // Display player stats
 const displayPlayerStats = (stats) => {
@@ -115,10 +115,10 @@ const displayPlayerStats = (stats) => {
     stl,
     turnover,
     season,
-  } = stats;
+  } = stats
 
-  displayMainAverages({ pts, ast, reb, fg_pct });
-  displaySeasonStatsHeader({ season });
+  displayMainAverages({ pts, ast, reb, fg_pct })
+  displaySeasonStatsHeader({ season })
   displaySeasonStatsTable({
     games_played,
     min,
@@ -137,21 +137,21 @@ const displayPlayerStats = (stats) => {
     turnover,
     pf,
     season,
-  });
-};
+  })
+}
 
 // Display main player averages
 const displayMainAverages = ({ pts, ast, reb, fg_pct }) => {
-  const mainAvgs = document.createElement('div');
+  const mainAvgs = document.createElement('div')
   mainAvgs.innerHTML = `
     <div class="main-avgs">
       ${createMainAvgItem('PPG', pts.toFixed(1))}
       ${createMainAvgItem('APG', ast.toFixed(1))}
       ${createMainAvgItem('RPG', reb.toFixed(1))}
       ${createMainAvgItem('FG%', (fg_pct * 100).toFixed(1) + '%')}
-    </div>`;
-  document.querySelector('#player-stats').appendChild(mainAvgs);
-};
+    </div>`
+  document.querySelector('#player-stats').appendChild(mainAvgs)
+}
 
 // Create main average item
 const createMainAvgItem = (label, value) => `
@@ -159,15 +159,15 @@ const createMainAvgItem = (label, value) => `
     <p class="heading-md avg-main">${value}</p>
     <p class="heading-sm avg-secondary">${label}</p>
   </div>
-`;
+`
 
 // Display season stats header
 const displaySeasonStatsHeader = ({ season }) => {
-  const header = document.createElement('p');
-  header.classList.add('heading-sm');
-  header.textContent = `${season}-${season + 1} SEASON STATS`;
-  document.querySelector('#season-header').appendChild(header);
-};
+  const header = document.createElement('p')
+  header.classList.add('heading-sm')
+  header.textContent = `${season}-${season + 1} SEASON STATS`
+  document.querySelector('#season-header').appendChild(header)
+}
 
 // Display season stats table
 const displaySeasonStatsTable = (stats) => {
@@ -189,10 +189,10 @@ const displaySeasonStatsTable = (stats) => {
     pts,
     pf,
     season,
-  } = stats;
+  } = stats
 
-  const table = document.createElement('div');
-  table.classList.add('stats-table');
+  const table = document.createElement('div')
+  table.classList.add('stats-table')
   table.innerHTML = `
     <table>
       <tr>
@@ -233,123 +233,125 @@ const displaySeasonStatsTable = (stats) => {
         <td class="screen-sm">${pf.toFixed(1)}</td>
         <td>${pts.toFixed(1)}</td>
       </tr>
-    </table>`;
-  document.querySelector('#season-avgs').appendChild(table);
-};
+    </table>`
+  document.querySelector('#season-avgs').appendChild(table)
+}
 
 // Season dropdown menu
 const displayDropdownMenu = () => {
-  const dropdown = document.getElementById('season-dropdown');
+  const dropdown = document.getElementById('season-dropdown')
 
-  const startYear = 1970;
-  const endYear = new Date().getFullYear() - 1;
+  const startYear = 1970
+  const endYear = new Date().getFullYear()
 
   // Populate dropdown with years
   for (let year = endYear; year >= startYear; year--) {
-    const option = document.createElement('option');
-    option.text = `${year}-${year + 1}`;
-    option.value = year;
-    dropdown.add(option);
+    const option = document.createElement('option')
+    option.text = `${year}-${year + 1}`
+    option.value = year
+    dropdown.add(option)
   }
-};
+}
 
 // Display error message
 const showError = (message) => {
   // Clear previous error messages
-  clearElements('error');
+  clearElements('error')
 
   // Display error message
-  const errorMsg = document.createElement('p');
-  errorMsg.innerHTML = message;
-  errorMsg.classList.add('error');
-  document.querySelector('#error').appendChild(errorMsg);
+  const errorMsg = document.createElement('p')
+  errorMsg.innerHTML = message
+  errorMsg.classList.add('error')
+  document.querySelector('#error').appendChild(errorMsg)
 
   // Hide spinner
-  hideSpinner();
-};
+  hideSpinner()
+}
 
 // Show and hide loading spinner
 const showSpinner = () => {
-  document.querySelector('.spinner').classList.add('show');
-};
+  document.querySelector('.spinner').classList.add('show')
+}
 
 const hideSpinner = () => {
-  document.querySelector('.spinner').classList.remove('show');
-};
+  document.querySelector('.spinner').classList.remove('show')
+}
 
 // Clear previous data on each render
 const clearElements = (...elementIds) => {
   elementIds.forEach((id) => {
-    document.querySelector(`#${id}`).innerHTML = '';
-  });
-};
+    document.querySelector(`#${id}`).innerHTML = ''
+  })
+}
 
 // Fetch player data
 const fetchPlayerData = async (first, last) => {
-  showSpinner();
+  showSpinner()
 
   try {
-    const response = await fetch(`/api/players?first=${first}&last=${last}`);
-    const data = await response.json();
+    const response = await fetch(`/api/players?first=${first}&last=${last}`)
+    const data = await response.json()
 
     if (data.length === 0) {
-      hideSpinner();
-      showError('Player not found: Please try your search again.');
-      return null;
+      hideSpinner()
+      showError('Player not found: Please try your search again.')
+      return null
     }
 
-    hideSpinner();
+    hideSpinner()
 
-    return data;
+    return data
   } catch (error) {
-    console.log(error);
-    hideSpinner();
-    showError('Error fetching player. Please try again.');
-    return null;
+    console.log(error)
+    hideSpinner()
+    showError('Error fetching player. Please try again.')
+    return null
   }
-};
+}
 
 // Fetch player stats
 const fetchPlayerStats = async (playerId, selectedSeason) => {
-  showSpinner();
+  showSpinner()
 
   try {
     const response = await fetch(
-      `/api/stats?playerId=${playerId}&selectedSeason=${selectedSeason}`
-    );
-    const data = await response.json();
+      `/api/stats?season=${selectedSeason}&player_id=${playerId}`
+    )
+    const data = await response.json()
+    console.log(data)
 
     if (!response.ok) {
+      console.log(response)
       showError(
         'Player stats not found for this NBA season. Try selecting a different year.'
-      );
-      return null;
+      )
+      return null
     }
 
-    hideSpinner();
+    hideSpinner()
 
-    return data;
+    return data
   } catch (error) {
-    console.log(error);
-    hideSpinner();
-    return null;
+    console.log(error)
+    hideSpinner()
+    return null
   }
-};
+}
 
 // Fetch data on search
 const search = async () => {
-  const selectedSeason = seasonDropdown.value;
-  const firstName = firstNameInput.value.trim();
-  const lastName = lastNameInput.value.trim();
+  const selectedSeason = seasonDropdown.value
+  const firstName = firstNameInput.value.trim()
+  const lastName = lastNameInput.value.trim()
 
   if (!firstName && !lastName) {
-    alert('Please enter a player name.');
-    return;
+    alert('Please enter a player name.')
+    return
   }
 
   if (seasonDropdown.value === '') {
-    alert('Please select an NBA season from the menu.');
-    return;
+    alert('Please select an NBA season from the menu.')
+    return
   }
 
   try {
@@ -363,57 +365,57 @@ const search = async () => {
       'player-stats',
       'draft-info',
       'college-info'
-    );
+    )
 
     // Fetch player data
-    const player = await fetchPlayerData(firstName, lastName);
+    const player = await fetchPlayerData(firstName, lastName)
 
     if (!player) {
-      return;
+      return
     }
 
     if (player.first_name === undefined || player.last_name === undefined) {
-      showError('Player not found: Please try your search again.');
-      return;
+      showError('Player not found: Please try your search again.')
+      return
     }
 
-    firstNameInput.value = `${player.first_name}`;
-    lastNameInput.value = `${player.last_name}`;
+    firstNameInput.value = `${player.first_name}`
+    lastNameInput.value = `${player.last_name}`
 
     // Display player info to DOM
-    displayPlayerInfo(player);
+    displayPlayerInfo(player)
 
     // Fetch player stats using player id
-    const playerId = player.id;
-    const stats = await fetchPlayerStats(playerId, selectedSeason);
+    const playerId = player.id
+    const stats = await fetchPlayerStats(playerId, selectedSeason)
 
     if (stats) {
       // Display player stats to DOM
-      displayPlayerStats(stats);
+      displayPlayerStats(stats)
     }
   } catch (error) {
-    console.log(error);
+    showError(error.message)
   }
-};
+}
 
 // Event listeners
 // Display season dropdown menu on page load
-document.addEventListener('DOMContentLoaded', displayDropdownMenu);
+document.addEventListener('DOMContentLoaded', displayDropdownMenu)
 
 // Search stats when the selected season changes
 seasonDropdown.addEventListener('change', () => {
-  search();
-});
+  search()
+})
 
 // Accept enter key on search
 firstNameInput.addEventListener('keypress', (e) => {
   if (e.key === 'Enter') {
-    search();
+    search()
   }
-});
+})
 
 lastNameInput.addEventListener('keypress', (e) => {
   if (e.key === 'Enter') {
-    search();
+    search()
   }
-});
+})
